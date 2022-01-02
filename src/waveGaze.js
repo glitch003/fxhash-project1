@@ -42,61 +42,38 @@ webgazer
 // `;
 // document.body.prepend(container);
 
-let message = "look at me",
-  font,
-  bounds, // holds x, y, w, h of the text's bounding box
-  fontsize = 90,
-  x,
-  y; // x and y coordinates of the text
-
 const sketch = (s) => {
-  s.preload = () => {
-    font = s.loadFont("Pacifico-Regular.ttf");
-  };
+  let t = 0; // time variable
+
   s.setup = () => {
     s.createCanvas(s.windowWidth, s.windowHeight);
-
-    // set up the font
-    s.textFont(font);
-    s.textSize(fontsize);
-    s.fill(0);
-
-    // get the width and height of the text so we can center it initially
-    bounds = font.textBounds(message, 0, 0, fontsize);
-    x = s.width / 2 - bounds.w / 2;
-    y = s.height / 2 - bounds.h / 2;
+    s.noStroke();
+    s.fill(40, 200, 40);
   };
 
   s.draw = () => {
-    s.background(204, 120);
+    s.background(10, 10); // translucent background (creates trails)
 
-    // write the text in black and get its bounding box
-    // s.fill(0);
-    s.text(message, x, y);
-    bounds = font.textBounds(message, x, y, fontsize);
+    // make a x and y grid of ellipses
+    for (let x = 0; x <= s.width; x = x + 30) {
+      for (let y = 0; y <= s.height; y = y + 30) {
+        // starting point of each circle depends on mouse position
+        // const xAngle = s.map(s.mouseX, 0, s.width, -4 * s.PI, 4 * s.PI, true);
+        // const yAngle = s.map(s.mouseY, 0, s.height, -4 * s.PI, 4 * s.PI, true);
+        const xAngle = s.map(gazeX, 0, s.width, -4 * s.PI, 4 * s.PI, true);
+        const yAngle = s.map(gazeY, 0, s.height, -4 * s.PI, 4 * s.PI, true);
+        // and also varies based on the particle's location
+        const angle = xAngle * (x / s.width) + yAngle * (y / s.height);
 
-    // check if the mouse is inside the bounding box and tickle if so
-    // if (
-    //   s.mouseX >= bounds.x &&
-    //   s.mouseX <= bounds.x + bounds.w &&
-    //   s.mouseY >= bounds.y &&
-    //   s.mouseY <= bounds.y + bounds.h
-    // ) {
-    //   x += s.random(-5, 5);
-    //   y += s.random(-5, 5);
-    // }
+        // each particle moves in a circle
+        const myX = x + 20 * s.cos(2 * s.PI * t + angle);
+        const myY = y + 20 * s.sin(2 * s.PI * t + angle);
 
-    // check if eyes are in the box
-    if (
-      gazeX >= bounds.x &&
-      gazeX <= bounds.x + bounds.w &&
-      gazeY >= bounds.y &&
-      gazeY <= bounds.y + bounds.h
-    ) {
-      x += getRandomInt(10) - 5;
-      y += getRandomInt(10) - 5;
-      s.fill(getRandomInt(255), getRandomInt(255), getRandomInt(255));
+        s.ellipse(myX, myY, 10); // draw particle
+      }
     }
+
+    t = t + 0.01; // update time
   };
 };
 

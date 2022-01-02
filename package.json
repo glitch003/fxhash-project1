@@ -10,6 +10,7 @@
     "start": "webpack serve --config ./config/webpack.config.dev.js"
   },
   "dependencies": {
+    "normalize.css": "^8.0.1",
     "p5": "^1.4.0",
     "webgazer": "^2.1.0"
   },
