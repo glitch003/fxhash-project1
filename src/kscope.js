@@ -1,30 +1,41 @@
 import p5 from "p5";
 import { getRandomInt } from "./utils.js";
 
+const bg = [getRandomInt(100), getRandomInt(75) + 25, 100];
+let hue, sat;
+hue = getRandomInt(100);
+sat = getRandomInt(75) + 25;
+
+let drawX, drawY;
+drawX = getRandomInt(50);
+drawY = getRandomInt(50);
+
+let xDir, yDir;
+xDir = getRandomInt(2) === 0 ? -1 : 1;
+yDir = getRandomInt(2) === 0 ? -1 : 1;
+
+window.$fxhashFeatures = {
+  Background: `hsb(${bg[0]}, ${bg[1]}%, ${bg[2]}%)`,
+  StartingColor: `hsb(${hue}, ${sat}%, 100%)`,
+  StaringCoordinate: `(${drawX}, ${drawY})`,
+  StartingDirection: `(${xDir}, ${yDir})`,
+};
+
 const sketch = (s) => {
   // Symmetry corresponding to the number of reflections. Change the number for different number of reflections
   let symmetry = 9;
 
   let angle = 360 / symmetry;
   let saveButton, clearButton, fullscreenButton, brushSizeSlider, sizeSlider;
-  let hue, sat;
-  let drawX, drawY, pDrawX, pDrawY;
-  let xDir, yDir;
-  const bg = [getRandomInt(100), getRandomInt(75) + 25, 100];
+  let pDrawX, pDrawY;
 
   s.windowResized = () => {
     s.resizeCanvas(s.windowWidth, s.windowHeight);
+    s.background(...bg);
   };
 
   s.setup = () => {
     s.colorMode(s.HSB, 100);
-    hue = getRandomInt(100);
-    sat = getRandomInt(75) + 25;
-
-    drawX = getRandomInt(s.width);
-    drawY = getRandomInt(s.height);
-    xDir = getRandomInt(2) === 0 ? -1 : 1;
-    yDir = getRandomInt(2) === 0 ? -1 : 1;
 
     // // Creating the save button for the file
     // saveButton = s.createButton("save");
