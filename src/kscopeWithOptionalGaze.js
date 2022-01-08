@@ -70,9 +70,11 @@ const sketch = (s) => {
       })
       .begin();
     eyeTrackingActivated = true;
-    alert(
-      "Allow usage of your camera.  Then, click anywhere in the page to begin eye tracking.  Clicking more in different places will make the eye tracking more accurate"
-    );
+    setTimeout(() => {
+      alert(
+        "Allow usage of your camera.  Then, click anywhere in the page to begin eye tracking.  Clicking more in different places will make the eye tracking more accurate"
+      );
+    }, 200);
   }
 
   s.draw = () => {
